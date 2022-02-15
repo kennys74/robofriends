@@ -6,21 +6,23 @@ import "./App.css";
 
 export default function App() {
   const [robots, setRobots] = useState([]);
+  const [filteredRobots, setFilteredRobots] = useState([]);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((users) => {
         setRobots(users);
+        setFilteredRobots(users);
       });
   }, []);
 
   const onSearchChange = (event) => {
-    const filteredRobots = robots.filter((robot) =>
+    const searchedRobots = robots.filter((robot) =>
       robot.name.includes(event.target.value)
     );
 
-    setRobots(filteredRobots);
+    setFilteredRobots(searchedRobots);
   };
 
   return !robots.length ? (
@@ -30,7 +32,7 @@ export default function App() {
       <h1 className="f1">RoboFriends</h1>
       <SearchBox searchChange={onSearchChange} />
       <Scroll>
-        <CardList robots={robots} />
+        <CardList robots={filteredRobots} />
       </Scroll>
     </div>
   );
